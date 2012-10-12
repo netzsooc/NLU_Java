@@ -26,28 +26,8 @@ public class Tokeniser {
 		return exit;
 	}
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		String[] objetos = {
-				"foco de la cocina",
-				"foco del comedor",
-				"foco de la recámara de arriba",
-				"foco de la recámara de los niños",
-				"recámara principal",
-				"foco del estudio"
-		};		
-		String[] input = {
-				"Enciende el foco de la cocina",
-				"Enciende el poco la cocina",
-				"Entiende el foco la cocina",
-				"1,100 del foco de la cocina",
-				"100 del foco de la cocina",
-				"encender foco de la cocina",
-				"función del foco de la cocina al 30%",
-				"el foco de la cocina"
-		};		
-		String[] acciones = {"encend", "apag"};
-		
+	public static String[] tokeniser(String[] objetos, String[] input,
+			String[] acciones){
 		Pattern MiPat = Pattern.compile("([0-9]{1,3})(%| por ciento)");
 		String juntos = join(input, " ").toLowerCase();
 		List<String> percents = new ArrayList<String>();
@@ -57,7 +37,7 @@ public class Tokeniser {
 		String intens = null;
 		String diaSem = null;
 		String hora = null;
-
+		
 		Arrays.sort(objetos, new MyComparator());
 		Matcher m = MiPat.matcher(juntos);
 		while(m.find()){
@@ -81,14 +61,14 @@ public class Tokeniser {
 				break;				
 			}
 		}
-
+		
 		int enc = 0;
 		int apa = 0;
 		
 		for (String word: juntos.split(" ")){
 			for (String accion1: acciones){
 				if (word.startsWith("enciende") || word.startsWith(accion1)){
-		
+					
 					if (accion1 == "encend" || word.startsWith("enciende"))
 						enc ++;
 					else
@@ -110,6 +90,31 @@ public class Tokeniser {
 		regreso[3] = diaSem;
 		regreso[4] = hora;
 		
-		System.out.println(Arrays.toString(regreso));
+		return regreso;
+		
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String[] objetos = {
+				"foco de la cocina",
+				"foco del comedor",
+				"foco de la recámara de arriba",
+				"foco de la recámara de los niños",
+				"recámara principal",
+				"foco del estudio"
+		};		
+		String[] input = {
+				"Enciende el foco de la cocina un 30 por ciento el jueves",
+				"Enciende el poco la cocina",
+				"Entiende el foco la cocina",
+				"1,100 del foco de la cocina",
+				"100 del foco de la cocina",
+				"encender foco de la cocina",
+				"función del foco de la cocina",
+				"el foco de la cocina"
+		};		
+		String[] acciones = {"encend", "apag"};
+		
+		System.out.println(Arrays.toString(tokeniser(objetos, input, acciones)));
 	}
 }
