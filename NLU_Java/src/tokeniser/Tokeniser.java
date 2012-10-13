@@ -28,7 +28,12 @@ public class Tokeniser {
 	
 	public static String[] tokeniser(String[] objetos, String[] input,
 			String[] acciones){
+		
+		String[] diasSema = {"lunes", "martes", "miercoles", "jueves", 
+				"viernes", "sabado", "domingo"};
+		
 		Pattern MiPat = Pattern.compile("([0-9]{1,3})(%| por ciento)");
+		
 		String juntos = join(input, " ").toLowerCase();
 		List<String> percents = new ArrayList<String>();
 		String[] regreso = new String[5];
@@ -84,6 +89,11 @@ public class Tokeniser {
 		else if (apa > enc)
 			accion = "0";
 		
+		for (String dia: diasSema){
+			if(juntos.contains(dia)){
+				diaSem = dia;
+			}
+		}
 		regreso[0] = accion;
 		regreso[1] = objeto;
 		regreso[2] = intens;
